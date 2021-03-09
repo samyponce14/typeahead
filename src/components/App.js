@@ -1,19 +1,9 @@
-import * as React from 'react';
+import React from 'react';
+import TypeaheadWidget from './TypeaheadWidget';
+import searchList from '../searchList';
 
-export function App({ initialData }) {
-  const [count, setCount] = React.useState(0);
+export function App() {
   return (
-    <div>
-      <h1>{initialData.appName}</h1>
-      This is a sample stateful and server-side rendered React application.
-      <br />
-      <br />
-      Here is a button that will track how many times you click it:
-      <br />
-      <br />
-      <button title="increment" onClick={() => setCount(count + 1)}>
-        {count}
-      </button>
-    </div>
+    <TypeaheadWidget searchList={searchList} />
   );
 }
