@@ -11,6 +11,8 @@ const TypeaheadInput = ({ inputText = '', handleChange, handleClear }) => {
 			<InputLabel htmlFor="search-input">Search for a fruit</InputLabel>
 			<Input
 				id="search-input"
+				type="text"
+				inputProps={{ 'aria-label': 'Search bar for fruit names' }}
 				onChange={handleChange}
 				placeholder="Fruit name"
 				value={inputText}

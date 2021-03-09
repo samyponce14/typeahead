@@ -6,10 +6,10 @@ const TypeaheadWidget = ({ searchList = [] }) => {
 	const [inputText, setInputText] = useState('');
 	const [suggestions, setSuggestions] = useState([]);
 
-	const suggestionSelected = fruit => {
-		setInputText(fruit);
+	const suggestionSelected = item => {
+		setInputText(item);
 		setSuggestions([]);
-		alert(`${fruit} selected`);
+		alert(`${item} selected`);
 	};
 
 	const clearInput = () => {
@@ -18,12 +18,12 @@ const TypeaheadWidget = ({ searchList = [] }) => {
 	};
 
 	//Utils function that helps to match the input to an item of the list
-	const checkName = (fruit, str) => {
+	const checkMatch = (text, str) => {
 		var pattern = str.split("").map((x) => {
 			return `(?=.*${x})`
 		}).join("");
 		var regex = new RegExp(`${pattern}`, "g")
-		return fruit.match(regex);
+		return text.match(regex);
 	};
 
 	const matchInput = e => {
@@ -37,9 +37,9 @@ const TypeaheadWidget = ({ searchList = [] }) => {
 		//	as it gets less options in the list that contain the same first 3 characters
 		const inputSub = inputText.toLowerCase().substring(0, 3);
 
-		const newSuggestions = searchList.filter((fruit) => {
-			const fruitSub = fruit.substring(0, 3).toLowerCase();
-			return fruit.toLowerCase().includes(inputSub) || checkName(fruitSub, inputSub)
+		const newSuggestions = searchList.filter((text) => {
+			const textSub = text.substring(0, 3).toLowerCase();
+			return text.toLowerCase().includes(inputSub) || checkMatch(textSub, inputSub)
 		});
 
 		if (newSuggestions.length > 0) {
@@ -54,10 +54,11 @@ const TypeaheadWidget = ({ searchList = [] }) => {
 				handleChange={matchInput}
 				handleClear={clearInput}
 			/>
-			<SuggestionList
+			{inputText && <SuggestionList
 				suggestions={suggestions}
 				handleSelectSuggestion={suggestionSelected}
-			/>
+				highlightedLetters={inputText}
+			/>}
 		</div>
 	);
 }
