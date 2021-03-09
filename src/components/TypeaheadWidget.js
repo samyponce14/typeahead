@@ -5,10 +5,12 @@ import SuggestionList from './SuggestionList';
 const TypeaheadWidget = ({ searchList = [] }) => {
 	const [inputText, setInputText] = useState('');
 	const [suggestions, setSuggestions] = useState([]);
+	const [cursor, setCursor] = useState(-1);
 
 	const suggestionSelected = item => {
 		setInputText(item);
 		setSuggestions([]);
+		setCursor(-1);
 		alert(`${item} selected`);
 	};
 
@@ -47,8 +49,51 @@ const TypeaheadWidget = ({ searchList = [] }) => {
 		}
 	};
 
+	//Create references for each list item
+	const refs = suggestions.reduce((acc, value) => {
+		acc[value] = React.createRef();
+		return acc;
+	}, {});
+
+	const handleScroll = id => {
+		refs[id].current.scrollIntoView({
+			behavior: 'smooth',
+			block: 'start',
+		});
+	};
+
+	const onKeyUp = e => {
+		//Check if key is:
+		//	Enter - to select the current input
+		//	Up Arrow - to highlight next list item
+		//	Down Arrow - to highlight previous list item
+		//	any letter - to focus on input instead of list
+		if (e.keyCode === 13 && cursor >= 0) {
+			suggestionSelected(suggestions[cursor]);
+		} else if (e.keyCode === 13) {
+			suggestionSelected(inputText);
+		} else if (e.keyCode === 38 && cursor >= 0) {
+			updateCursor(cursor - 1);
+		} else if (e.keyCode === 40 && cursor < suggestions.length - 1) {
+			updateCursor(cursor + 1);
+		} else if (e.keyCode >= 65 && e.keyCode <= 90) {
+			setCursor(-1);
+		}
+	};
+
+	//Update cursor and scroll to current item in list
+	const updateCursor = i => {
+		if (i >= 0) {
+			handleScroll(suggestions[i]);
+		}
+		setCursor(i);
+	};
+
 	return (
-		<div className="form">
+		<div
+			className="form"
+			onKeyUp={onKeyUp}
+		>
 			<TypeaheadInput
 				inputText={inputText}
 				handleChange={matchInput}
@@ -58,6 +103,8 @@ const TypeaheadWidget = ({ searchList = [] }) => {
 				suggestions={suggestions}
 				handleSelectSuggestion={suggestionSelected}
 				highlightedLetters={inputText}
+				cursor={cursor}
+				refs={refs}
 			/>}
 		</div>
 	);

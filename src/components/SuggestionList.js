@@ -3,7 +3,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-const SuggestionList = ({ suggestions = [], handleSelectSuggestion, highlightedLetters = '' }) => {
+const SuggestionList = ({ suggestions = [], handleSelectSuggestion, highlightedLetters = '', cursor, refs }) => {
 
 	const getHighlightedText = (text, highlight) => {
 		// Split on highlight term and include term into parts, ignore case
@@ -17,10 +17,18 @@ const SuggestionList = ({ suggestions = [], handleSelectSuggestion, highlightedL
 
 	return (
 		<List className="list" aria-label="Suggestion fruit list" >
-			{suggestions.map((item) => {
+			{suggestions.map((item, i) => {
 				return (
-					<ListItem button key={item} onClick={() => handleSelectSuggestion(item)}>
-						<ListItemText primary={getHighlightedText(item, highlightedLetters)} />
+					<ListItem
+						button
+						key={item}
+						ref={refs[item]}
+						selected={cursor === i}
+						onClick={() => handleSelectSuggestion(item)}
+					>
+						<ListItemText
+							primary={getHighlightedText(item, highlightedLetters)}
+						/>
 					</ListItem>
 				);
 			})}
