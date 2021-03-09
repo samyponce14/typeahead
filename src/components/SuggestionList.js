@@ -5,7 +5,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 const SuggestionList = ({ suggestions = [], handleSelectSuggestion }) => {
 	return (
-		<List aria-label="Suggestion fruit list">
+		<List className="list" aria-label="Suggestion fruit list" >
 			{suggestions.map((fruit) => {
 				return (
 					<ListItem button key={fruit} onClick={() => handleSelectSuggestion(fruit)}>

@@ -48,7 +48,7 @@ const TypeaheadWidget = ({ searchList = [] }) => {
 	};
 
 	return (
-		<div>
+		<div className="form">
 			<TypeaheadInput
 				inputText={inputText}
 				handleChange={matchInput}

@@ -1,13 +1,14 @@
-:root {
-  --color-main: #333;
+.form {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding-bottom: 70px;
+  padding-right: 50px;
 }
 
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
-
-body {
-  color: var(--color-main);
+.list {
+  max-height: 200px;
+  overflow: auto;
+  position: fixed !important;
 }
